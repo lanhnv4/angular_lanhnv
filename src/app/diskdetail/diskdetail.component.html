@@ -6,7 +6,7 @@
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
-  <div fxFlex="100">
+  <div fxFlex="100" *ngIf="dish">
     <div>
       <h3>{{dish.name | uppercase}}</h3>
       <hr>
@@ -35,9 +35,6 @@
         </mat-card-actions>
       </mat-card>
   </div>
-  <div [hidden]="dish">
-    <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
-  </div>
   <div fxFlex="40" *ngIf="dish">
     <mat-card>
       <mat-card-header>
@@ -49,14 +46,31 @@
           <p>{{cmt.comment}}</p>
           <span>{{cmt.rating}} Stars</span>
           <p>--{{cmt.author}} {{cmt.date | date}}</p>
-          <div style="padding-bottom:10px"></div>
       </mat-card-content>
-      <mat-card-actions>
-      </mat-card-actions>
+          
+    <div style="padding-bottom:10px"></div>
+    <mat-list-item *ngIf="!commentForm.invalid">
+      <h4 matLine> {{commentForm.value.author | json}} </h4>
+      <p matLine> {{commentForm.value.rating | json}}  Stars </p>
+      <p matLine>
+        <span> -- {{commentForm.value.comment | json}}</span>
+      </p>
+  </mat-list-item>
     </mat-card>
+    <h3>Your comment</h3>
+      <form novalidate [formGroup]="commentForm" #cform="ngForm" (ngSubmit)="onSubmit()">
+       <mat-form-field class="full-width" >
+            <input matInput formControlName="author" placeholder="Your Name" type="text" author required>
+            <mat-error *ngIf="formErrors.author">{{formErrors.author}}</mat-error>
+        </mat-form-field>
+        <p>
+          <mat-slider matInput formControlName="rating" min="1" max="5" step="1" value="5" thumbLabel tickInterval="1"></mat-slider>
+        </p>
+        <mat-form-field class="full-width">
+            <textarea matInput formControlName="comment" placeholder="Your comment" rows=8 comment required></textarea>
+            <mat-error *ngIf="formErrors.comment">{{formErrors.comment}}</mat-error>
+        </mat-form-field>
+        <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="cform.form.invalid">Submit</button>
+      </form>
   </div>
-  <div [hidden]="dish">
-    <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
-  </div>
-
 </div>
