@@ -19,6 +19,8 @@ import { HomeComponent } from './home/home.component';
 import { ContactComponent } from './contact/contact.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { baseURL } from './shared/baseurl';
 
 @NgModule({
   declarations: [
@@ -51,13 +53,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatSlideToggleModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatSliderModule
+    MatSliderModule,
+    HttpClientModule
 
   ],
   entryComponents: [
     LoginComponent
   ],
-  providers: [DishService,PromotionService, LeaderService],
+  providers: [DishService,PromotionService, LeaderService,{provide: 'baseURL', useValue: baseURL}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
