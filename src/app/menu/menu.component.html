@@ -22,5 +22,10 @@
   <div [hidden]="dishes">
     <mat-spinner></mat-spinner><h4>Loading . . . Please Wait</h4>
   </div>
-  <app-diskdetail [dish]="selectedDish"></app-diskdetail>
+
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
+  </div>
+ 
 </div>
