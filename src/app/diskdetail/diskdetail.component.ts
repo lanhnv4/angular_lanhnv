@@ -6,18 +6,33 @@ import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 @Component({
   selector: 'app-diskdetail',
   templateUrl: './diskdetail.component.html',
-  styleUrls: ['./diskdetail.component.scss']
+  styleUrls: ['./diskdetail.component.scss'],
+  animations: [
+    trigger('visibility', [
+        state('shown', style({
+            transform: 'scale(1.0)',
+            opacity: 1
+        })),
+        state('hidden', style({
+            transform: 'scale(0.5)',
+            opacity: 0
+        })),
+        transition('* => *', animate('0.5s ease-in-out'))
+    ])
+  ]
 })
 export class DiskdetailComponent implements OnInit {
 
   @ViewChild('cform') commentFormDirective;
   commentForm: FormGroup;
   comment: Comment;
+  
 
   @Input()
   dish: Dish
@@ -51,12 +66,16 @@ export class DiskdetailComponent implements OnInit {
         'minlength':     'Comment must be at least 2 characters long.',
       }
     };
-  
+
+    visibility = 'shown';
+
     ngOnInit() {
       this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-      this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
-       errmess => this.errMess = <any>errmess);
+      this.route.params.pipe(switchMap((params: Params) => { this.visibility = 'hidden'; 
+      return this.dishservice.getDish(params['id']); }))
+       .subscribe(dish => { this.dish = dish; this.dishcopy = dish; 
+        this.setPrevNext(dish.id); this.visibility = 'shown'; },
+        errmess => this.errMess = <any>errmess);
     }
   
     setPrevNext(dishId: string) {
