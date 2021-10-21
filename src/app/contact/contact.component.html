@@ -35,11 +35,9 @@
       </div>
     </div>
   </div>
-  <div fxFlex fxFlexOffset="20px" class="form-size" >
+  <div fxFlex fxFlexOffset="20px" class="form-size">
     <h3>Send us your Feedback</h3>
-    <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
-
-    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="!pfeedback" novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text" firstname required>
@@ -79,5 +77,17 @@
       </p>
       <button type="submit" mat-button class="background-primary text-floral-white">Submit</button>
     </form>
+  </div>
+  <div *ngIf="isSubmited">
+    <mat-spinner></mat-spinner><h4>Uploading . . . Please Wait</h4>
+  </div>
+  <div *ngIf="pfeedback" onload="setTimeout(() => {this.window.location.reload();}, 5000);" >
+    <h2>Your submision</h2>
+    <LI>First Name {{ pfeedback.firstname}}</LI>
+    <LI>Last Name {{ pfeedback.lastname}}</LI>
+    <LI>Tel Number {{ pfeedback.telnum}}</LI>
+    <LI>Email {{ pfeedback.email}}</LI>
+    <LI>Contact you? {{ pfeedback.agree}}</LI>
+    <LI>How? {{ pfeedback.contacttype}}</LI>
   </div>
 </div>

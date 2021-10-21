@@ -1,3 +1,4 @@
+import { FeedbackService } from './services/feedback.service';
 import { LeaderService } from './services/leader.service';
 import { PromotionService } from './services/promotion.service';
 import { AppRoutingModule } from './app-routing/app-routing.module';
@@ -63,7 +64,7 @@ import { HighlightDirective } from './directives/highlight.directive';
   entryComponents: [
     LoginComponent
   ],
-  providers: [DishService,PromotionService, 
+  providers: [DishService,PromotionService, FeedbackService, 
     LeaderService, ProcessHTTPMsgService, {provide: 'baseURL', useValue: baseURL}],
   bootstrap: [AppComponent]
 })
